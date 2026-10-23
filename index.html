@@ -5406,6 +5406,24 @@ const GLB_POSE_FIX = (() => {
       uaL:[0.45, 0, 0.12], faL:[-1.4, 0, 0]}, legs(0.35, 0.9)); return Object.assign(atk(st, {st:[-1.6, -0.2, 0.1]}), {stance:st}); }
   };
 })();
+/* Au repos : debout, naturel, épaules droites. L'outil tenu le long du corps (ou posé sur l'épaule s'il est long),
+   l'autre main pendante ou dans le dos selon le personnage ; jambes presque tendues, un pied légèrement devant l'autre. */
+const UPRIGHT = {grizzly:["hang", "hang"], lynx:["shoulder", "hang"], wolf:["hang", "tool"], fox:["hang", "back"], owl:["hang", "back"], badger:["hang", "hang"],
+  panther:["hang", "back"], beaver:["hang", "hang"], meerkat:["shoulder", "hang"], heron:["shoulder", "back"], raccoon:["shoulder", "hang"], raven:["hang", "back"],
+  boar:["shoulder", "hang"], marten:["hang", "back"], goat:["shoulder", "back"]};
+// réglage des bras calculé hors ligne sur chaque modèle (voir calibArms)
+const UPRIGHT_CAL = {"grizzly":{"stance":{"uaR":[0.05,0.4,-0.15],"faR":[-0.2,0,0],"haR":[1,0,0],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]},"relax":{"uaR":[0.05,0.4,-0.15],"faR":[-0.2,0,0],"haR":[1,0,0],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]}},"lynx":{"stance":{"uaR":[-0.1,0,-0.2],"faR":[-1,0,0],"haR":[1.6,0,-1.2],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]},"relax":{"uaR":[-0.1,0,-0.2],"faR":[-1,0,0],"haR":[1.6,0,-1.2],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]}},"wolf":{"stance":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[0.8,0,0],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.8,0,0]},"relax":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[0.8,0,0],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.8,0,0]}},"fox":{"stance":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[0.8,0,0],"uaL":[0,-0.4,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]},"relax":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[0.8,0,0],"uaL":[0,-0.4,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]}},"owl":{"stance":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[0,0,0.8],"uaL":[0.05,-0.4,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]},"relax":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[0,0,0.8],"uaL":[0.05,-0.4,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]}},"badger":{"stance":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[0.2,0,-1],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]},"relax":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[0.2,0,-1],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]}},"panther":{"stance":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[0,0,-0.2],"uaL":[0.05,-0.4,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]},"relax":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[0,0,-0.2],"uaL":[0.05,-0.4,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]}},"beaver":{"stance":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[-0.8,0,-0.2],"uaL":[0.05,-0.4,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]},"relax":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[-0.8,0,-0.2],"uaL":[0.05,-0.4,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]}},"meerkat":{"stance":{"uaR":[-0.1,0,-0.2],"faR":[-1,0,0],"haR":[1.6,0,0.2],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]},"relax":{"uaR":[-0.1,0,-0.2],"faR":[-1,0,0],"haR":[1.6,0,0.2],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]}},"heron":{"stance":{"uaR":[-0.1,0,-0.2],"faR":[-1,0,0],"haR":[0.8,0,1.6],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]},"relax":{"uaR":[-0.1,0,-0.2],"faR":[-1,0,0],"haR":[0.8,0,1.6],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]}},"raccoon":{"stance":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[-0.4,0,1.4],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]},"relax":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[-0.4,0,1.4],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]}},"raven":{"stance":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[0.6,0,0],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]},"relax":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[0.6,0,0],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]}},"boar":{"stance":{"uaR":[-0.1,0,-0.2],"faR":[-1,0,0],"haR":[1.4,0,1.6],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]},"relax":{"uaR":[-0.1,0,-0.2],"faR":[-1,0,0],"haR":[1.4,0,1.6],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]}},"marten":{"stance":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[1.6,0,0],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]},"relax":{"uaR":[0.05,0.2,-0.15],"faR":[-0.2,0,0],"haR":[1.6,0,0],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]}},"goat":{"stance":{"uaR":[-0.1,0,-0.2],"faR":[-1,0,0],"haR":[1,0,1.6],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]},"relax":{"uaR":[-0.1,0,-0.2],"faR":[-1,0,0],"haR":[1,0,1.6],"uaL":[0.05,-0.2,0.15],"faL":[-0.2,0,0],"haL":[0.1,0,0]}}};
+function glbUpright(kind){
+  const [tool, free] = UPRIGHT[kind] || ["hang", "hang"];
+  const base = {hips:[0, 0, 0], spine:[-0.03, 0, 0], chest:[-0.07, 0, 0], neck:[0, 0, 0], head:[-0.05, 0, 0],
+    thL:[-0.06, 0, 0.1], shL:[0.1, 0, 0], ftL:[-0.04, 0, 0], thR:[0.045, 0, -0.1], shR:[0.065, 0, 0], ftR:[-0.05, 0, 0]};
+  const R = {hang:{uaR:[-0.15, 0, -0.14], faR:[-0.4, 0, 0], haR:[0.15, 0, 0]}, shoulder:{uaR:[-0.3, 0.2, -0.3], faR:[-1.9, 0, 0], haR:[0.2, 0, 0]}, back:{uaR:[0.45, 0, -0.12], faR:[-1.45, 0, 0], haR:[0.2, 0, 0]}};
+  const L = {hang:{uaL:[-0.05, 0, 0.12], faL:[-0.3, 0, 0], haL:[0.1, 0, 0]}, tool:{uaL:[-0.15, 0, 0.14], faL:[-0.4, 0, 0], haL:[0.15, 0, 0]}, back:{uaL:[0.45, 0, 0.12], faL:[-1.45, 0, 0], haL:[0.2, 0, 0]}};
+  const stance = Object.assign({}, base, R[tool], L[free]);
+  // en ami (dialogues) : même tenue, la main libre toujours dans le dos
+  const relax = Object.assign({}, base, R[tool], free === "tool" ? L.tool : L.back);
+  return {stance, relax};
+}
 function glbMarkers(mesh){
   const g = mesh.geometry, pos = g.attributes.position, si = g.attributes.skinIndex, sw = g.attributes.skinWeight, B = mesh.skeleton.bones, out = [];
   const want = ["Hips", "Spine02", "Spine01", "Spine", "Head", "LeftUpLeg", "RightUpLeg", "LeftLeg", "RightLeg", "LeftFoot", "RightFoot", "LeftToeBase", "RightToeBase", "LeftArm", "RightArm", "LeftForeArm", "RightForeArm", "LeftHand", "RightHand"];
@@ -5542,6 +5560,61 @@ function glbChar(kind, friend){
   const NC = {q:new THREE.Quaternion(), pq:new THREE.Quaternion(), a:new THREE.Vector3(), b:new THREE.Vector3(), g:new THREE.Vector3(), tp:new THREE.Vector3(), x:new THREE.Vector3(), ax:new THREE.Vector3(), push:new THREE.Vector3(), ab:new THREE.Vector3(), cl:new THREE.Vector3(), sh:new THREE.Vector3()};
   const clips = scene.userData.weapons.map(mt => ({mt, hand:mt.parent, tip:null, ang:0, axis:new THREE.Vector3(1, 0, 0)}));
   const onSeg = p => { NC.ab.subVectors(NC.b, NC.a); const t = Math.max(0, Math.min(1, NC.cl.subVectors(p, NC.a).dot(NC.ab) / (NC.ab.lengthSq() || 1))); return NC.cl.copy(NC.a).addScaledVector(NC.ab, t); };
+  // calage des bras pour la tenue debout : bras qui pendent, outil court tenu vers l'avant, outil long posé au sol comme un bâton, main libre dans le dos
+  const calibArms = () => {
+    const LONG = {staff:1, cane:1, pointer:1, tsquare:1, rule:1}, hands = {}; (WEAP3[kind] || []).forEach(w => { hands[w.hand] = w; });
+    const free = (UPRIGHT[kind] || ["hang", "hang"])[1], tv = new THREE.Vector3(), ta = new THREE.Vector3(), tb = new THREE.Vector3();
+    const apply = P => { VB.names.forEach(n => VB[n].rotation.set(0, 0, 0)); for(const n in P) if(VB[n]) VB[n].rotation.set(P[n][0], P[n][1], P[n][2]); retarget(); root.updateWorldMatrix(true, true); };
+    const dir = (a, b) => bones[b].getWorldPosition(tb).sub(bones[a].getWorldPosition(ta)).normalize().clone();
+    const tipOf = mt => { let best = 0, tip = null; mt.updateMatrixWorld(true); const inv = new THREE.Matrix4().copy(mt.matrixWorld).invert(), v = new THREE.Vector3();
+      mt.traverse(m => { if(!m.isMesh) return; const pos = m.geometry.attributes.position, Mx = new THREE.Matrix4().multiplyMatrices(inv, m.matrixWorld), st = Math.max(1, Math.floor(pos.count / 600));
+        for(let i = 0; i < pos.count; i += st){ v.fromBufferAttribute(pos, i).applyMatrix4(Mx); if(v.lengthSq() > best){ best = v.lengthSq(); tip = v.clone(); } } }); return tip; };
+    const grid = (lo, hi, st) => { const a = []; for(let x = lo; x <= hi + 1e-9; x += st) a.push(+x.toFixed(3)); return a; };
+    const out = {};
+    for(const key of ["stance", "relax"]){
+      const P = JSON.parse(JSON.stringify(Cc.poses[key])); apply(P);
+      const r = bones.RightUpLeg.getWorldPosition(new THREE.Vector3()).sub(bones.LeftUpLeg.getWorldPosition(new THREE.Vector3())).setY(0).normalize(), u = new THREE.Vector3(0, 1, 0), f = new THREE.Vector3().crossVectors(u, r);
+      const V = (a, b, c) => new THREE.Vector3().addScaledVector(r, a).addScaledVector(u, b).addScaledVector(f, c).normalize();
+      for(const side of ["R", "L"]){
+        const S = side === "R" ? "Right" : "Left", sg = side === "R" ? 1 : -1, w = hands[S], uaK = "ua" + side, faK = "fa" + side, haK = "ha" + side;
+        const mode = w ? (LONG[w.file] ? "stick" : "hang") : "hang";   // main libre : le long du corps (la main dans le dos se lisait mal de face)
+        const T = {hang:{ua:V(sg * 0.16, -1, 0.06), fa:V(sg * 0.08, -1, 0.32), tool:V(0, -0.55, 0.75)}, stick:{ua:V(sg * 0.2, -1, 0.22), fa:V(sg * 0.05, -0.25, 0.85), tool:V(0, -1, 0.08)},
+          back:{ua:V(sg * 0.12, -0.85, -0.42), fa:V(-sg * 0.9, 0.12, -0.35)}}[mode];
+        const ua = P[uaK] || [0, 0, 0], fa = P[faK] || [0, 0, 0];
+        const s1 = () => dir(S + "Arm", S + "ForeArm").dot(T.ua), s2 = () => dir(S + "ForeArm", S + "Hand").dot(T.fa);
+        let B = {s:-9};
+        for(const x of grid(-1.6, 1.6, 0.2)) for(const z of grid(-2, 2, 0.2)){ P[uaK] = [x, 0, z]; P[faK] = [-0.2, 0, 0]; apply(P); const sc = s1(); if(sc > B.s) B = {s:sc, x, z}; }
+        for(const x of grid(B.x - 0.2, B.x + 0.2, 0.05)) for(const z of grid(B.z - 0.2, B.z + 0.2, 0.05)){ P[uaK] = [x, 0, z]; apply(P); const sc = s1(); if(sc > B.s) B = {s:sc, x, z}; }
+        let C2 = {s:-9};
+        for(const y of grid(-1.6, 1.6, 0.2)) for(const fx of grid(-2.4, 0.2, 0.2)){ P[uaK] = [B.x, y, B.z]; P[faK] = [fx, 0, 0]; apply(P); const sc = s1() * 0.6 + s2(); if(sc > C2.s) C2 = {s:sc, y, fx}; }
+        P[uaK] = [B.x, C2.y, B.z]; P[faK] = [C2.fx, 0, 0]; P[haK] = [0.1, 0, 0];
+        const mt = (scene.userData.weapons || []).find(m => m.parent === bones[S + "Hand"]);
+        if(mt && T.tool){ const tip = tipOf(mt); if(tip){ let H = {s:-9};
+          for(const hx of grid(-1.6, 1.6, 0.2)) for(const hz of grid(-1.6, 1.6, 0.2)){ P[haK] = [hx, 0, hz]; apply(P); const g = mt.getWorldPosition(new THREE.Vector3()), tp = tip.clone().applyMatrix4(mt.matrixWorld), sc = tp.sub(g).normalize().dot(T.tool) - (mode === "stick" ? 0.05 : 0.2) * (Math.abs(hx) + Math.abs(hz)); if(sc > H.s) H = {s:sc, hx, hz}; }
+          P[haK] = [H.hx, 0, H.hz]; } }
+        out[key] = out[key] || {}; out[key][uaK] = P[uaK]; out[key][faK] = P[faK]; out[key][haK] = P[haK];
+      }
+    }
+    apply({}); return out;
+  };
+  // épaules à la même hauteur : chaque clavicule est ramenée à l'horizontale (hauteur moyenne des deux épaules), quelle que soit la pose
+  const SHL = {q:new THREE.Quaternion(), pq:new THREE.Quaternion(), dq:new THREE.Quaternion(), u:new THREE.Vector3(), v:new THREE.Vector3(), c:new THREE.Vector3(), pL:new THREE.Vector3(), pR:new THREE.Vector3()};
+  const levelShoulders = w => { const cL = bones.LeftShoulder, cR = bones.RightShoulder, aL = bones.LeftArm, aR = bones.RightArm; if(!cL || !cR || !aL || !aR) return;
+    [cL, cR].forEach(c => { if(c.userData.rq){ c.quaternion.copy(c.userData.rq); c.updateMatrixWorld(true); } });
+    if(w < 0.01) return;
+    // les bras et la tête gardent leur orientation : seules les épaules sont remises de niveau
+    const keep = [aL, aR, bones.Head].filter(Boolean).map(o => [o, o.getWorldQuaternion(new THREE.Quaternion())]);
+    // d'abord le haut du buste : la ligne des épaules est ramenée à l'horizontale (le cou et la tête suivent)
+    const top = cL.parent; aL.getWorldPosition(SHL.pL); aR.getWorldPosition(SHL.pR);
+    if(top && top.parent){ SHL.u.subVectors(SHL.pL, SHL.pR); SHL.v.set(SHL.u.x, 0, SHL.u.z); if(SHL.u.lengthSq() > 1e-8 && SHL.v.lengthSq() > 1e-8){
+      SHL.u.normalize(); SHL.v.normalize(); SHL.dq.setFromUnitVectors(SHL.u, SHL.v); SHL.q.identity().slerp(SHL.dq, w); SHL.dq.copy(SHL.q);
+      top.getWorldQuaternion(SHL.q); top.parent.getWorldQuaternion(SHL.pq); SHL.q.premultiply(SHL.dq); top.quaternion.copy(SHL.pq.invert().multiply(SHL.q)); top.updateMatrixWorld(true);
+      aL.getWorldPosition(SHL.pL); aR.getWorldPosition(SHL.pR); } }
+    const yT = (SHL.pL.y + SHL.pR.y) / 2;
+    [[cL, SHL.pL], [cR, SHL.pR]].forEach(([c, p]) => { c.getWorldPosition(SHL.c); SHL.u.subVectors(p, SHL.c); if(SHL.u.lengthSq() < 1e-8) return;
+      SHL.v.copy(SHL.u); SHL.v.y -= (p.y - yT) * w; SHL.u.normalize(); SHL.v.normalize(); SHL.dq.setFromUnitVectors(SHL.u, SHL.v);
+      c.getWorldQuaternion(SHL.q); c.parent.getWorldQuaternion(SHL.pq); SHL.q.premultiply(SHL.dq); c.quaternion.copy(SHL.pq.invert().multiply(SHL.q)); c.updateMatrixWorld(true); });
+    keep.forEach(([o, wq]) => { o.parent.getWorldQuaternion(SHL.pq); o.quaternion.copy(SHL.pq.invert().multiply(wq)); o.updateMatrixWorld(true); }); };
   const noClip = dt => {
     const Hb = bones.Hips, Nb = bones.Head || bones.neck; if(!Hb || !Nb || !clips.length) return;
     Hb.getWorldPosition(NC.a); Nb.getWorldPosition(NC.b); const rb = NC.a.distanceTo(NC.b) * 0.34; Cc.bodyR = rb;
@@ -5589,10 +5662,16 @@ function glbChar(kind, friend){
     if(ik.w > 0.01) legs.forEach(L => solveLeg(L, ik.w));
     plumbs.forEach(pl => { pl.parent.getWorldQuaternion(pq); se.set(Math.sin(st.t * 2.3) * 0.12, 0, Math.cos(st.t * 1.9) * 0.12); pl.quaternion.copy(pq.invert()).multiply(sw.setFromEuler(se)); });
     blob.position.y = (0.012 - root.position.y) / (root.scale.y || 1);
-    root.updateWorldMatrix(true, true); noClip(dt);
+    root.updateWorldMatrix(true, true); levelShoulders(Math.max(0.35, ik.w)); noClip(dt);
   };
 
-  Cc.poses = Object.assign(POSES3[kind](), {drop:0}, GLB_POSE_FIX[kind] ? GLB_POSE_FIX[kind]() : {}); Cc.animate = beastAnimator(Cc, Cc.poses);
+  Cc.poses = Object.assign(POSES3[kind](), {drop:0}, GLB_POSE_FIX[kind] ? GLB_POSE_FIX[kind]() : {});
+  { const up = glbUpright(kind); Cc.poses.stance = up.stance; Cc.poses.relax = up.relax;
+    // bras réglés sur le modèle lui-même (chaque modèle a sa propre pose de repos) : table calculée une fois pour toutes, sinon calcul sur place
+    try { const cal = UPRIGHT_CAL[kind] || (window.__CALIB ? (UPRIGHT_CAL[kind] = calibArms()) : null);
+      if(cal) ["stance", "relax"].forEach(k => { if(cal[k]) Object.assign(Cc.poses[k], cal[k]); }); } catch(e){ diag("pose " + kind + " : " + e.message); }
+    VB.names.forEach(n => VB[n].rotation.set(0, 0, 0)); }
+  Cc.animate = beastAnimator(Cc, Cc.poses);
   return Cc;
 }
 /* Entrée en scène d'un modèle arrivé pendant l'échange : petit nuage de poussière ; à terre si l'adversaire est déjà battu */
