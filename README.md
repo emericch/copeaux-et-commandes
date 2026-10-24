@@ -1,6 +1,6 @@
 # Copeaux & Commandes
 
-Un roguelite d'atelier en 3D pour réviser le titre professionnel de **technicien d'études en agencement intérieur** (RNCP 36239) : relevés, lecture de plan, nomenclatures, dossier chiffré, commandes AutoCAD et entretien avec le jury.
+Un roguelite d'atelier en 3D pour réviser la préparation de chantier en **agencement intérieur** : relevés, lecture de plan, nomenclatures, dossier chiffré et commandes AutoCAD.
 
 **Jouer : https://emericch.github.io/copeaux-et-commandes/**
 
@@ -15,7 +15,7 @@ Au programme :
 - plans où il faut repérer les erreurs ;
 - nomenclatures et dossiers techniques à remplir ligne par ligne ;
 - commandes AutoCAD à taper (alias) ;
-- questionnaire blanc et entretien blanc pour s'entraîner au format de l'examen.
+- questionnaire et entretien d'entraînement pour faire le point.
 
 Les questions de relevé, de métier et d'entretien citent leur source. Le carnet suit ta progression par domaine, sur 14 jours, avec tes points faibles.
 
